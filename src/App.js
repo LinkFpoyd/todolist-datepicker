@@ -7,6 +7,8 @@ import {
   MuiPickersUtilsProvider
 } from '@material-ui/pickers';
 import './App.css';
+import Tabs from '@mui/material/Tabs'; 
+import Tab  from '@mui/material/Tab';
 
 
 function App() {
@@ -14,6 +16,7 @@ function App() {
   const [selectedDate, handleDateChange] = useState(new Date());
   const [todo, setTodo] = useState({desc: '', date: ''});
   const [todos, setTodos] = useState([]);
+  const [value, setValue] = useState('one');
   
 
   const addTodo = (event) => {
@@ -30,13 +33,22 @@ function App() {
     setTodo({...todo, date: event.getDate().toString() + '.' + (event.getMonth() +1).toString() + '.' + event.getFullYear().toString()});
   }
 
+  const handleChange = (event, value) => {
+    setValue(value);
+  };
 
 
   return (
     <div className="App">
 
+      <Tabs value={value} onChange={handleChange}>
+        <Tab value="one" label="Home" />
+        <Tab value="two" label="To Do List" />
+      </ Tabs>
+        {value === 'one' &&  <div>Welcome to the homepage</div>}
+        {value === 'two' &&  <div>
       <MuiPickersUtilsProvider utils={DateFnsUtils}>
-      <DatePicker value={selectedDate} onChange={changeDate} />
+        <DatePicker value={selectedDate} onChange={changeDate} />
       </MuiPickersUtilsProvider>
 
       <TextField label="Description" type="text" name="desc" value={todo.desc} onChange={inputChanged}/>
@@ -50,6 +62,9 @@ function App() {
         </tr>)
       }
       </tbody></table>
+          </div>}
+
+
     </div>
   );
 }
